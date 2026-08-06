@@ -3,36 +3,36 @@ import Link from "next/link";
 const benefits = [
   {
     number: "01",
-    title: "سجّل بياناتك",
+    title: "نبدأ من أهل سيوة",
     description:
-      "أدخل اسمك ورقم هاتفك واختر القبيلة والعائلة والبيت بطريقة منظمة.",
+      "نبني قاعدة بيانات منظمة لأبناء الواحة، تبدأ بالمنطقة ثم القبيلة والعائلة والبيت.",
   },
   {
     number: "02",
-    title: "كن جزءًا من الشبكة",
+    title: "نطوّر طريقة التبليغ",
     description:
-      "ساهم في بناء قاعدة بيانات رقمية منظمة لأبناء سيوة.",
+      "نستخدم التقنية لتسهيل إيصال الدعوات، مع الحفاظ على مكانة الأهل والعرف وروح المناسبة.",
   },
   {
     number: "03",
-    title: "وصل الدعوة لأهلها",
+    title: "نفتح باب المستقبل",
     description:
-      "في المراحل القادمة، ستساعد المنصة على تقليل احتمالات عدم وصول الدعوات.",
+      "نمهّد لاحقًا لخدمات رقمية تشمل إيصال الدعوات وتصميمها بطريقة تليق بكل مناسبة.",
   },
 ];
 
 const values = [
-  "تنظيم أفضل لبيانات أبناء سيوة",
-  "تقليل مشكلة ضياع الدعوات",
-  "حماية بيانات الأعضاء",
-  "خدمة رقمية محلية من سيوة",
+  "احترام العادات والعرف السيوي",
+  "تنظيم الدعوة دون إلغاء دور الأهل",
+  "حماية بيانات أبناء الواحة",
+  "بساطة تصلح لكل الأعمار",
 ];
 
 export default function HomePage() {
   return (
     <main className="min-h-screen overflow-hidden">
       <section className="relative bg-[#315c4c] text-white">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(215,168,91,0.22),transparent_38%),radial-gradient(circle_at_bottom_right,rgba(255,255,255,0.08),transparent_32%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(215,168,91,0.22),transparent_38%),radial-gradient(circle_at_bottom_right,rgba(201,120,61,0.16),transparent_32%)]" />
 
         <div className="container-page relative">
           <header className="flex items-center justify-between border-b border-white/15 py-5">
@@ -47,7 +47,7 @@ export default function HomePage() {
 
               <div>
                 <p className="text-lg font-bold tracking-wide">دعوة</p>
-                <p className="text-xs text-white/65">من سيوة إلى أهلها</p>
+                <p className="text-xs text-white/65">من أهلها إلى أهلها</p>
               </div>
             </Link>
 
@@ -65,23 +65,22 @@ export default function HomePage() {
                 مبادرة رقمية من سيوة
               </p>
 
-              <h1 className="text-balance text-4xl font-bold leading-[1.25] sm:text-5xl lg:text-6xl">
-                خلّي دعوتك توصل لأهلها
+              <h1 className="text-balance text-4xl font-bold leading-[1.3] sm:text-5xl lg:text-6xl">
+                دعوة من أهلها، تصل إلى أهلها
               </h1>
 
               <p className="mt-6 max-w-xl text-lg leading-9 text-white/75 sm:text-xl">
-                في كل مناسبة، قد توجد أسماء لا تصلها الدعوة بسبب الاعتماد على
-                الكشوف الورقية أو عدم وصول الدعوات إلى جميع الأشخاص. دعوة تهدف
-                إلى تنظيم بيانات أبناء الواحة والمساعدة مستقبلًا في إيصال
-                الدعوات بطريقة أكثر ترتيبًا ووضوحًا.
+                في سيوة، الدعوة ليست ورقة فقط؛ إنها صلة بين أهل المناسبة
+                وأهلهم وأصدقائهم وجيرانهم. جاءت دعوة لتطوّر طريقة التبليغ بما
+                يناسب زمننا، دون أن تفقد الدعوة معناها أو مكانتها.
               </p>
 
               <div className="mt-9 flex flex-col gap-3 sm:flex-row">
                 <Link
-                  href="#join"
+                  href="/register"
                   className="inline-flex items-center justify-center rounded-2xl bg-[#d7a85b] px-7 py-4 font-bold text-[#234338] transition hover:bg-[#e5bd7b]"
                 >
-                  سجّل بياناتك في دعوة
+                  انضم إلى دعوة
                 </Link>
 
                 <Link
@@ -93,7 +92,7 @@ export default function HomePage() {
               </div>
 
               <p className="mt-5 text-sm text-white/55">
-                التسجيل في المرحلة الحالية مخصص لأبناء سيوة فقط.
+                المرحلة الحالية مخصصة لأبناء سيوة فقط.
               </p>
             </div>
 
@@ -105,13 +104,13 @@ export default function HomePage() {
                 <div className="rounded-[2rem] bg-[#f8f5ef] p-7 text-[#25342d]">
                   <div className="mb-10 flex items-start justify-between">
                     <div>
-                      <p className="text-sm text-[#6c776f]">بطاقة العضو</p>
+                      <p className="text-sm text-[#6c776f]">معنى الدعوة</p>
                       <h2 className="mt-2 text-2xl font-bold text-[#315c4c]">
-                        دعوة
+                        صلة ومكانة
                       </h2>
                     </div>
 
-                    <span className="rounded-full bg-[#eaf2ed] px-3 py-1 text-xs font-bold text-[#315c4c]">
+                    <span className="rounded-full bg-[#eadcc6] px-3 py-1 text-xs font-bold text-[#315c4c]">
                       سيوة
                     </span>
                   </div>
@@ -124,9 +123,9 @@ export default function HomePage() {
 
                   <div className="mt-12 flex items-end justify-between">
                     <div>
-                      <p className="text-xs text-[#6c776f]">الهدف</p>
+                      <p className="text-xs text-[#6c776f]">رسالتنا</p>
                       <p className="mt-1 font-bold text-[#315c4c]">
-                        دعوة تصل لأهلها
+                        التقنية في خدمة الدعوة
                       </p>
                     </div>
 
@@ -143,16 +142,18 @@ export default function HomePage() {
 
       <section id="about" className="section-space bg-[#f8f5ef]">
         <div className="container-page">
-          <div className="max-w-2xl">
-            <p className="font-bold text-[#b17a2d]">لماذا دعوة؟</p>
+          <div className="max-w-3xl">
+            <p className="font-bold text-[#c9783d]">فكرة دعوة</p>
+
             <h2 className="mt-3 text-3xl font-bold leading-tight text-[#315c4c] sm:text-4xl">
-              نبدأ من مشكلة حقيقية في مجتمعنا
+              نحفظ قيمة الدعوة، ونطوّر وسيلة إيصالها
             </h2>
+
             <p className="mt-5 text-lg leading-9 text-[#6c776f]">
-              الدعوة في سيوة ليست مجرد ورقة؛ إنها وسيلة لإبلاغ الأهل والأصدقاء
-              والجيران. ومع كثرة الأسماء والكشوف، قد لا تصل بعض الدعوات إلى
-              أصحابها. لذلك نبدأ بخطوة بسيطة: تنظيم بيانات أبناء سيوة بشكل
-              يحترم خصوصية كل شخص.
+              في كل مناسبة، تحمل الدعوة معنى يتجاوز الورق أو الرسالة؛ فهي
+              تقدير وصلة ومشاركة. لذلك لا تأتي دعوة لتلغي طرق التبليغ المعروفة
+              بين أهلنا، بل لتساعد على تنظيمها وتطويرها بما يناسب زمننا، ويحفظ
+              خصوصية المجتمع وكرامة المناسبة.
             </p>
           </div>
 
@@ -165,9 +166,11 @@ export default function HomePage() {
                 <span className="text-4xl font-bold text-[#d7a85b]">
                   {benefit.number}
                 </span>
+
                 <h3 className="mt-6 text-xl font-bold text-[#315c4c]">
                   {benefit.title}
                 </h3>
+
                 <p className="mt-3 leading-8 text-[#6c776f]">
                   {benefit.description}
                 </p>
@@ -180,10 +183,16 @@ export default function HomePage() {
       <section className="section-space bg-[#eadcc6]/45">
         <div className="container-page grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-center">
           <div>
-            <p className="font-bold text-[#b17a2d]">قيمنا</p>
+            <p className="font-bold text-[#c9783d]">فلسفة التصميم</p>
+
             <h2 className="mt-3 text-3xl font-bold leading-tight text-[#315c4c] sm:text-4xl">
-              تقنية بسيطة لخدمة اجتماعية واضحة
+              بسيط في الاستخدام، عميق في المعنى
             </h2>
+
+            <p className="mt-5 leading-8 text-[#6c776f]">
+              نصمم دعوة لتكون واضحة لمن لا يعرف الكثير عن الهاتف، وراقية بما
+              يكفي لتخدم أصحاب المناسبات، وهادئة بما يليق بحكمة أهل الواحة.
+            </p>
           </div>
 
           <div className="grid gap-4 sm:grid-cols-2">
@@ -195,6 +204,7 @@ export default function HomePage() {
                 <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#315c4c] text-sm font-bold text-white">
                   ✓
                 </span>
+
                 <span className="font-semibold text-[#315c4c]">{value}</span>
               </div>
             ))}
@@ -204,13 +214,15 @@ export default function HomePage() {
 
       <section id="join" className="section-space bg-[#315c4c] text-white">
         <div className="container-page text-center">
-          <p className="font-bold text-[#f4dba8]">خطوتك الأولى</p>
+          <p className="font-bold text-[#f4dba8]">الخطوة الأولى</p>
+
           <h2 className="mx-auto mt-3 max-w-2xl text-3xl font-bold leading-tight sm:text-4xl">
-            كن جزءًا من شبكة دعوة في سيوة
+            كن جزءًا من منظومة دعوة في سيوة
           </h2>
+
           <p className="mx-auto mt-5 max-w-xl text-lg leading-8 text-white/70">
-            سجّل بياناتك الآن. التسجيل في هذه المرحلة لا يتطلب دفعًا، وبياناتك
-            لا تظهر للعامة أو لأهل الأفراح.
+            سجّل بياناتك الآن، وشارك في بناء طريقة أكثر تنظيمًا للتبليغ عن
+            المناسبات، مع الحفاظ على قيمة الدعوة وروحها.
           </p>
 
           <Link
@@ -224,15 +236,13 @@ export default function HomePage() {
 
       <footer className="bg-[#234338] py-8 text-white">
         <div className="container-page flex flex-col gap-5 text-sm text-white/65 sm:flex-row sm:items-center sm:justify-between">
-          <p>© {new Date().getFullYear()} دعوة — مبادرة رقمية من سيوة</p>
+          <p>© {new Date().getFullYear()} دعوة — من أهلها إلى أهلها</p>
 
           <div className="flex gap-5">
-            <Link
-              href="/privacy"
-              className="transition hover:text-white"
-            >
+            <Link href="/privacy" className="transition hover:text-white">
               الخصوصية
             </Link>
+
             <Link href="/terms" className="transition hover:text-white">
               الشروط والأحكام
             </Link>
