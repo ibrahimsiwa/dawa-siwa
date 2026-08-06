@@ -15,90 +15,79 @@ export type TaxonomyTribe = {
   families: TaxonomyFamily[];
 };
 
-export const siwaTaxonomy: TaxonomyTribe[] = [
+export type SiwaRegion = {
+  id: string;
+  name: string;
+  tribes: TaxonomyTribe[];
+};
+
+/**
+ * أسماء تجريبية مؤقتة.
+ * سيتم استبدالها بالبيانات المعتمدة بعد إرسال قائمة المناطق
+ * والقبائل والعائلات والبيوت.
+ */
+export const siwaRegions: SiwaRegion[] = [
   {
-    id: "tribe-1",
-    name: "قبيلة تجريبية أولى",
-    families: [
+    id: "region-1",
+    name: "منطقة تجريبية أولى",
+    tribes: [
       {
-        id: "family-1-1",
-        name: "عائلة تجريبية أولى",
-        houses: [
+        id: "tribe-1-1",
+        name: "قبيلة تجريبية أولى",
+        families: [
           {
-            id: "house-1-1-1",
-            name: "بيت تجريبي أول",
+            id: "family-1-1-1",
+            name: "عائلة تجريبية أولى",
+            houses: [
+              {
+                id: "house-1-1-1-1",
+                name: "بيت تجريبي أول",
+              },
+              {
+                id: "house-1-1-1-2",
+                name: "بيت تجريبي ثانٍ",
+              },
+            ],
           },
           {
-            id: "house-1-1-2",
-            name: "بيت تجريبي ثانٍ",
-          },
-        ],
-      },
-      {
-        id: "family-1-2",
-        name: "عائلة تجريبية ثانية",
-        houses: [
-          {
-            id: "house-1-2-1",
-            name: "بيت تجريبي أول",
-          },
-          {
-            id: "house-1-2-2",
-            name: "بيت تجريبي ثانٍ",
+            id: "family-1-1-2",
+            name: "عائلة تجريبية ثانية",
+            houses: [
+              {
+                id: "house-1-1-2-1",
+                name: "بيت تجريبي أول",
+              },
+              {
+                id: "house-1-1-2-2",
+                name: "بيت تجريبي ثانٍ",
+              },
+            ],
           },
         ],
       },
     ],
   },
   {
-    id: "tribe-2",
-    name: "قبيلة تجريبية ثانية",
-    families: [
+    id: "region-2",
+    name: "منطقة تجريبية ثانية",
+    tribes: [
       {
-        id: "family-2-1",
-        name: "عائلة تجريبية أولى",
-        houses: [
+        id: "tribe-2-1",
+        name: "قبيلة تجريبية ثانية",
+        families: [
           {
-            id: "house-2-1-1",
-            name: "بيت تجريبي أول",
-          },
-          {
-            id: "house-2-1-2",
-            name: "بيت تجريبي ثانٍ",
-          },
-        ],
-      },
-      {
-        id: "family-2-2",
-        name: "عائلة تجريبية ثانية",
-        houses: [
-          {
-            id: "house-2-2-1",
-            name: "بيت تجريبي أول",
-          },
-          {
-            id: "house-2-2-2",
-            name: "بيت تجريبي ثانٍ",
-          },
-        ],
-      },
-    ],
-  },
-  {
-    id: "tribe-3",
-    name: "قبيلة تجريبية ثالثة",
-    families: [
-      {
-        id: "family-3-1",
-        name: "عائلة تجريبية أولى",
-        houses: [
-          {
-            id: "house-3-1-1",
-            name: "بيت تجريبي أول",
-          },
-          {
-            id: "house-3-1-2",
-            name: "بيت تجريبي ثانٍ",
+            id: "family-2-1-1",
+            name: "عائلة تجريبية أولى",
+            houses: [
+              {
+                id: "house-2-1-1-1",
+                name: "بيت تجريبي أول",
+              },
+              {
+                id: "house-2-1-1-2",
+                name: "بيت تجريبي ثانٍ",
+              },
+            ],
           },
         ],
       },
