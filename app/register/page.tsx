@@ -2,12 +2,13 @@
 
 import Link from "next/link";
 import { ChangeEvent, FormEvent, useMemo, useState } from "react";
-import { siwaTaxonomy } from "@/lib/data/taxonomy";
+import { siwaRegions } from "@/lib/data/taxonomy";
 
 type FormData = {
   fullName: string;
   phone: string;
   confirmPhone: string;
+  regionId: string;
   tribeId: string;
   familyId: string;
   houseId: string;
@@ -22,6 +23,7 @@ const initialFormData: FormData = {
   fullName: "",
   phone: "",
   confirmPhone: "",
+  regionId: "",
   tribeId: "",
   familyId: "",
   houseId: "",
@@ -32,16 +34,27 @@ const initialFormData: FormData = {
   contactConsent: false,
 };
 
+const inputClassName =
+  "w-full rounded-2xl border border-[#e5dac9] bg-[#fdfcf9] px-4 py-3 outline-none transition placeholder:text-[#9ba39d] focus:border-[#315c4c] focus:ring-4 focus:ring-[#315c4c]/10 disabled:cursor-not-allowed disabled:opacity-50";
+
 export default function RegisterPage() {
   const [formData, setFormData] = useState<FormData>(initialFormData);
   const [showSuggestedHouse, setShowSuggestedHouse] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
+  const selectedRegion = useMemo(
+    () =>
+      siwaRegions.find((region) => region.id === formData.regionId) ?? null,
+    [formData.regionId],
+  );
+
+  const availableTribes = selectedRegion?.tribes ?? [];
+
   const selectedTribe = useMemo(
     () =>
-      siwaTaxonomy.find((tribe) => tribe.id === formData.tribeId) ?? null,
-    [formData.tribeId],
+      availableTribes.find((tribe) => tribe.id === formData.tribeId) ?? null,
+    [availableTribes, formData.tribeId],
   );
 
   const availableFamilies = selectedTribe?.families ?? [];
@@ -68,6 +81,26 @@ export default function RegisterPage() {
     setErrors((current) => ({
       ...current,
       [field]: "",
+    }));
+  }
+
+  function handleRegionChange(event: ChangeEvent<HTMLSelectElement>) {
+    const regionId = event.target.value;
+
+    setFormData((current) => ({
+      ...current,
+      regionId,
+      tribeId: "",
+      familyId: "",
+      houseId: "",
+    }));
+
+    setErrors((current) => ({
+      ...current,
+      regionId: "",
+      tribeId: "",
+      familyId: "",
+      houseId: "",
     }));
   }
 
@@ -152,6 +185,10 @@ export default function RegisterPage() {
       nextErrors.confirmPhone = "رقم الهاتف غير متطابق.";
     }
 
+    if (!formData.regionId) {
+      nextErrors.regionId = "اختر المنطقة.";
+    }
+
     if (!formData.tribeId) {
       nextErrors.tribeId = "اختر القبيلة.";
     }
@@ -204,13 +241,14 @@ export default function RegisterPage() {
             </h1>
 
             <p className="mt-5 leading-8 text-[#6c776f]">
-              تم تسجيل بياناتك بنجاح في النسخة التجريبية. طلبك الآن قيد
-              المراجعة، وسيتم تحديث حالته بعد مراجعة الإدارة.
+              وصلت بياناتك بنجاح، وأصبحت الآن قيد المراجعة من إدارة دعوة.
+              التسجيل يعني انضمامك إلى منظومة استقبال الدعوات، وسيتم استخدام
+              بياناتك لهذا الغرض وفق سياسة الخصوصية.
             </p>
 
             <p className="mt-4 text-sm leading-7 text-[#6c776f]">
-              ملاحظة: هذه النسخة تحفظ البيانات بشكل تجريبي فقط، وسيتم ربطها
-              بقاعدة البيانات في الخطوة القادمة.
+              ملاحظة: هذه نسخة تجريبية، وسيتم ربط البيانات بقاعدة البيانات
+              الفعلية في الخطوة القادمة.
             </p>
 
             <Link
@@ -255,13 +293,12 @@ export default function RegisterPage() {
             <p className="font-bold text-[#b17a2d]">الخطوة الأولى</p>
 
             <h1 className="mt-3 text-3xl font-bold text-[#315c4c] sm:text-4xl">
-              سجّل بياناتك في دعوة
+              انضم إلى منظومة دعوة
             </h1>
 
             <p className="mx-auto mt-4 max-w-2xl leading-8 text-[#6c776f]">
-              التسجيل في المرحلة الحالية مخصص لأبناء سيوة فقط. بياناتك لا تظهر
-              للعامة أو لأهل الأفراح، ويتم استخدامها للغرض الموضح في سياسة
-              الخصوصية.
+              نحن نطوّر طريقة التبليغ عن الأفراح والمناسبات في سيوة، ونحافظ
+              على قيمة الدعوة ومكانتها بين الأهل والأصدقاء والجيران.
             </p>
           </div>
 
@@ -270,10 +307,11 @@ export default function RegisterPage() {
             className="rounded-[2rem] border border-[#e5dac9] bg-white p-5 shadow-sm sm:p-8"
           >
             <div className="mb-8 rounded-2xl bg-[#eaf2ed] p-5 text-[#315c4c]">
-              <p className="font-bold">ملاحظة مهمة</p>
+              <p className="font-bold">قبل التسجيل</p>
               <p className="mt-2 text-sm leading-7">
-                صورة البطاقة اختيارية، ورفعها لا يعني الحصول على التوثيق
-                تلقائيًا. تمنح الإدارة علامة «موثّق لدى دعوة» بعد المراجعة.
+                التسجيل في المرحلة الحالية مخصص لأبناء سيوة. إدخال بياناتك
+                يعني انضمامك إلى منظومة استقبال الدعوات عند تشغيل خدماتها،
+                وستتعامل دعوة مع البيانات وفق سياسة الخصوصية.
               </p>
             </div>
 
@@ -299,7 +337,7 @@ export default function RegisterPage() {
                       updateField("fullName", event.target.value)
                     }
                     placeholder="اكتب اسمك الكامل"
-                    className="w-full rounded-2xl border border-[#e5dac9] bg-[#fdfcf9] px-4 py-3 outline-none transition placeholder:text-[#9ba39d] focus:border-[#315c4c] focus:ring-4 focus:ring-[#315c4c]/10"
+                    className={inputClassName}
                   />
 
                   {errors.fullName && (
@@ -327,7 +365,7 @@ export default function RegisterPage() {
                       updateField("phone", event.target.value)
                     }
                     placeholder="01xxxxxxxxx"
-                    className="w-full rounded-2xl border border-[#e5dac9] bg-[#fdfcf9] px-4 py-3 text-right outline-none transition placeholder:text-[#9ba39d] focus:border-[#315c4c] focus:ring-4 focus:ring-[#315c4c]/10"
+                    className={`${inputClassName} text-right`}
                   />
 
                   {errors.phone && (
@@ -353,7 +391,7 @@ export default function RegisterPage() {
                       updateField("confirmPhone", event.target.value)
                     }
                     placeholder="أعد كتابة الرقم"
-                    className="w-full rounded-2xl border border-[#e5dac9] bg-[#fdfcf9] px-4 py-3 text-right outline-none transition placeholder:text-[#9ba39d] focus:border-[#315c4c] focus:ring-4 focus:ring-[#315c4c]/10"
+                    className={`${inputClassName} text-right`}
                   />
 
                   {errors.confirmPhone && (
@@ -367,15 +405,45 @@ export default function RegisterPage() {
 
             <section className="mt-10 border-t border-[#eee7db] pt-8">
               <h2 className="text-xl font-bold text-[#315c4c]">
-                التصنيف داخل سيوة
+                مكان الإقامة والتصنيف
               </h2>
 
               <p className="mt-2 text-sm leading-7 text-[#6c776f]">
-                اختر القبيلة ثم العائلة ثم البيت. كل قائمة تعتمد على الاختيار
-                السابق.
+                اختر المنطقة أولًا، ثم القبيلة والعائلة والبيت. هذا الترتيب
+                يساعد مستقبلًا على تنظيم كشوف الدعوات حسب المناطق.
               </p>
 
               <div className="mt-5 grid gap-5 sm:grid-cols-2">
+                <div>
+                  <label
+                    htmlFor="region"
+                    className="mb-2 block text-sm font-bold text-[#315c4c]"
+                  >
+                    المنطقة
+                  </label>
+
+                  <select
+                    id="region"
+                    value={formData.regionId}
+                    onChange={handleRegionChange}
+                    className={inputClassName}
+                  >
+                    <option value="">اختر المنطقة</option>
+
+                    {siwaRegions.map((region) => (
+                      <option key={region.id} value={region.id}>
+                        {region.name}
+                      </option>
+                    ))}
+                  </select>
+
+                  {errors.regionId && (
+                    <p className="mt-2 text-sm text-red-600">
+                      {errors.regionId}
+                    </p>
+                  )}
+                </div>
+
                 <div>
                   <label
                     htmlFor="tribe"
@@ -388,10 +456,14 @@ export default function RegisterPage() {
                     id="tribe"
                     value={formData.tribeId}
                     onChange={handleTribeChange}
-                    className="w-full rounded-2xl border border-[#e5dac9] bg-[#fdfcf9] px-4 py-3 outline-none transition focus:border-[#315c4c] focus:ring-4 focus:ring-[#315c4c]/10"
+                    disabled={!formData.regionId}
+                    className={inputClassName}
                   >
-                    <option value="">اختر القبيلة</option>
-                    {siwaTaxonomy.map((tribe) => (
+                    <option value="">
+                      {formData.regionId ? "اختر القبيلة" : "اختر المنطقة أولًا"}
+                    </option>
+
+                    {availableTribes.map((tribe) => (
                       <option key={tribe.id} value={tribe.id}>
                         {tribe.name}
                       </option>
@@ -418,7 +490,7 @@ export default function RegisterPage() {
                     value={formData.familyId}
                     onChange={handleFamilyChange}
                     disabled={!formData.tribeId}
-                    className="w-full rounded-2xl border border-[#e5dac9] bg-[#fdfcf9] px-4 py-3 outline-none transition focus:border-[#315c4c] focus:ring-4 focus:ring-[#315c4c]/10 disabled:cursor-not-allowed disabled:opacity-50"
+                    className={inputClassName}
                   >
                     <option value="">
                       {formData.tribeId
@@ -440,7 +512,7 @@ export default function RegisterPage() {
                   )}
                 </div>
 
-                <div className="sm:col-span-2">
+                <div>
                   <label
                     htmlFor="house"
                     className="mb-2 block text-sm font-bold text-[#315c4c]"
@@ -455,12 +527,10 @@ export default function RegisterPage() {
                       updateField("houseId", event.target.value)
                     }
                     disabled={!formData.familyId || showSuggestedHouse}
-                    className="w-full rounded-2xl border border-[#e5dac9] bg-[#fdfcf9] px-4 py-3 outline-none transition focus:border-[#315c4c] focus:ring-4 focus:ring-[#315c4c]/10 disabled:cursor-not-allowed disabled:opacity-50"
+                    className={inputClassName}
                   >
                     <option value="">
-                      {formData.familyId
-                        ? "اختر البيت"
-                        : "اختر العائلة أولًا"}
+                      {formData.familyId ? "اختر البيت" : "اختر العائلة أولًا"}
                     </option>
 
                     {availableHouses.map((house) => (
@@ -508,7 +578,7 @@ export default function RegisterPage() {
                         لا أجد اسم البيت الخاص بي
                       </span>
                       <span className="mt-1 block text-sm leading-6 text-[#6c776f]">
-                        يمكنك اقتراح اسم بيت جديد، وسيتم مراجعته من الإدارة قبل
+                        يمكنك اقتراح اسم بيت جديد، وستراجعه الإدارة قبل
                         اعتماده.
                       </span>
                     </span>
@@ -536,7 +606,7 @@ export default function RegisterPage() {
                           )
                         }
                         placeholder="اكتب اسم البيت"
-                        className="w-full rounded-2xl border border-[#e5dac9] bg-[#fdfcf9] px-4 py-3 outline-none transition placeholder:text-[#9ba39d] focus:border-[#315c4c] focus:ring-4 focus:ring-[#315c4c]/10"
+                        className={inputClassName}
                       />
 
                       {errors.suggestedHouseName && (
@@ -565,7 +635,7 @@ export default function RegisterPage() {
                           )
                         }
                         placeholder="معلومة تساعد الإدارة"
-                        className="w-full rounded-2xl border border-[#e5dac9] bg-[#fdfcf9] px-4 py-3 outline-none transition placeholder:text-[#9ba39d] focus:border-[#315c4c] focus:ring-4 focus:ring-[#315c4c]/10"
+                        className={inputClassName}
                       />
                     </div>
                   </>
@@ -580,7 +650,7 @@ export default function RegisterPage() {
 
               <p className="mt-2 text-sm leading-7 text-[#6c776f]">
                 يمكنك رفع صورة البطاقة لمساعدة الإدارة في مراجعة بياناتك. لا
-                تظهر الصورة للعامة، ولا تمنح العلامة الموثقة تلقائيًا.
+                تظهر الصورة للعامة، ولا تمنح علامة «موثّق لدى دعوة» تلقائيًا.
               </p>
 
               <label
@@ -590,6 +660,7 @@ export default function RegisterPage() {
                 <span className="block font-bold text-[#315c4c]">
                   اختر صورة البطاقة
                 </span>
+
                 <span className="mt-2 block text-sm text-[#6c776f]">
                   JPG أو PNG أو WEBP — الحد الأقصى 5 ميجابايت
                 </span>
@@ -603,7 +674,7 @@ export default function RegisterPage() {
                 />
 
                 {formData.idCardFile && (
-                  <span className="mt-3 block text-sm font-semibold text-[#b17a2d]">
+                  <span className="mt-3 block text-sm font-semibold text-[#c9783d]">
                     تم اختيار: {formData.idCardFile.name}
                   </span>
                 )}
@@ -618,7 +689,7 @@ export default function RegisterPage() {
 
             <section className="mt-10 border-t border-[#eee7db] pt-8">
               <h2 className="text-xl font-bold text-[#315c4c]">
-                الموافقات
+                الموافقة على استخدام البيانات
               </h2>
 
               <div className="mt-5 space-y-4">
@@ -640,7 +711,8 @@ export default function RegisterPage() {
                     >
                       سياسة الخصوصية
                     </Link>{" "}
-                    واستخدام بياناتي لغرض تشغيل منصة دعوة.
+                    واستخدام بياناتي لتشغيل منصة دعوة وتنظيم بيانات الأعضاء
+                    وإيصال الدعوات المتعلقة بالمناسبات.
                   </span>
                 </label>
 
@@ -672,12 +744,12 @@ export default function RegisterPage() {
               type="submit"
               className="mt-10 w-full rounded-2xl bg-[#315c4c] px-6 py-4 font-bold text-white transition hover:bg-[#234338]"
             >
-              إرسال بيانات التسجيل
+              إرسال بيانات الانضمام
             </button>
 
             <p className="mt-4 text-center text-xs leading-6 text-[#8b948e]">
-              بالضغط على زر الإرسال، تؤكد أن البيانات المدخلة تخصك أو أنك
-              تملك موافقة صاحبها.
+              بإرسال النموذج، تؤكد أن البيانات المدخلة تخصك أو أنك تملك
+              موافقة صاحبها.
             </p>
           </form>
         </div>
