@@ -14,7 +14,8 @@ type FormData = {
   houseId: string;
   suggestedHouseName: string;
   suggestedHouseNote: string;
-  idCardFile: File | null;
+  idCardFrontFile: File | null;
+  idCardBackFile: File | null;
   privacyConsent: boolean;
   contactConsent: boolean;
 };
@@ -29,7 +30,8 @@ const initialFormData: FormData = {
   houseId: "",
   suggestedHouseName: "",
   suggestedHouseNote: "",
-  idCardFile: null,
+  idCardFrontFile: null,
+  idCardBackFile: null,
   privacyConsent: false,
   contactConsent: false,
 };
@@ -138,21 +140,29 @@ export default function RegisterPage() {
     }));
   }
 
-  function handleFileChange(event: ChangeEvent<HTMLInputElement>) {
+  function handleIdCardFileChange(
+    event: ChangeEvent<HTMLInputElement>,
+    side: "front" | "back",
+  ) {
     const file = event.target.files?.[0] ?? null;
 
     if (!file) {
-      updateField("idCardFile", null);
+      if (side === "front") {
+        updateField("idCardFrontFile", null);
+      } else {
+        updateField("idCardBackFile", null);
+      }
       return;
     }
 
     const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
     const maxSizeInBytes = 5 * 1024 * 1024;
+    const errorKey = side === "front" ? "idCardFrontFile" : "idCardBackFile";
 
     if (!allowedTypes.includes(file.type)) {
       setErrors((current) => ({
         ...current,
-        idCardFile: "يرجى اختيار صورة بصيغة JPG أو PNG أو WEBP.",
+        [errorKey]: "يرجى اختيار صورة بصيغة JPG أو PNG أو WEBP.",
       }));
       event.target.value = "";
       return;
@@ -161,13 +171,17 @@ export default function RegisterPage() {
     if (file.size > maxSizeInBytes) {
       setErrors((current) => ({
         ...current,
-        idCardFile: "حجم الصورة يجب ألا يتجاوز 5 ميجابايت.",
+        [errorKey]: "حجم الصورة يجب ألا يتجاوز 5 ميجابايت.",
       }));
       event.target.value = "";
       return;
     }
 
-    updateField("idCardFile", file);
+    if (side === "front") {
+      updateField("idCardFrontFile", file);
+    } else {
+      updateField("idCardBackFile", file);
+    }
   }
 
   function validateForm() {
@@ -230,15 +244,25 @@ export default function RegisterPage() {
       <main className="min-h-screen bg-[#f8f5ef] px-4 py-10">
         <div className="mx-auto flex min-h-[80vh] max-w-xl items-center justify-center">
           <section className="w-full rounded-[2rem] border border-[#e5dac9] bg-white p-8 text-center shadow-sm sm:p-12">
+            <div className="mb-5 text-xs font-bold uppercase tracking-[0.25em] text-[#806477]">
+              siwa 360
+            </div>
+
             <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-[#eaf2ed] text-3xl text-[#315c4c]">
               ✓
             </div>
 
-            <p className="mt-6 font-bold text-[#b17a2d]">تم استلام البيانات</p>
+            <p className="mt-6 font-bold text-[#c9783d]">
+              تم استلام البيانات
+            </p>
 
-            <h1 className="mt-3 text-3xl font-bold text-[#315c4c]">
-              شكرًا لانضمامك إلى دعوة
+            <h1 className="mt-3 text-2xl font-bold text-[#315c4c] sm:text-3xl">
+              {formData.fullName}
             </h1>
+
+            <p className="mt-3 text-lg font-semibold text-[#806477]">
+              نورت منظومة دعوة
+            </p>
 
             <p className="mt-5 leading-8 text-[#6c776f]">
               وصلت بياناتك بنجاح، وأصبحت الآن قيد المراجعة من إدارة دعوة.
@@ -266,52 +290,53 @@ export default function RegisterPage() {
   return (
     <main className="min-h-screen bg-[#f8f5ef]">
       <header className="border-b border-[#e5dac9] bg-white/80">
-        <div className="container-page flex items-center justify-between py-5">
+        <div className="container-page flex flex-col items-center justify-center gap-3 py-5 text-center">
           <Link href="/" className="flex items-center gap-3">
             <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#315c4c] text-xl font-bold text-[#d7a85b]">
               د
             </span>
 
-            <div>
+            <div className="text-right">
               <p className="font-bold text-[#315c4c]">دعوة</p>
-              <p className="text-xs text-[#6c776f]">من سيوة إلى أهلها</p>
+              <p className="text-xs text-[#6c776f]">من أهلها إلى أهلها</p>
             </div>
           </Link>
 
-          <Link
-            href="/"
-            className="text-sm font-semibold text-[#315c4c] hover:text-[#b17a2d]"
-          >
-            الرئيسية
-          </Link>
+          <span className="text-[10px] font-bold uppercase tracking-[0.28em] text-[#806477]">
+            siwa 360
+          </span>
         </div>
       </header>
 
       <div className="container-page py-10 sm:py-16">
-        <div className="mx-auto max-w-3xl">
-          <div className="mb-10 text-center">
-            <p className="font-bold text-[#b17a2d]">الخطوة الأولى</p>
+        <div className="mx-auto max-w-3xl text-center">
+          <p className="text-xs font-bold uppercase tracking-[0.25em] text-[#806477]">
+            siwa 360
+          </p>
 
-            <h1 className="mt-3 text-3xl font-bold text-[#315c4c] sm:text-4xl">
-              انضم إلى منظومة دعوة
-            </h1>
+          <p className="mt-5 font-bold text-[#c9783d]">الخطوة الأولى</p>
 
-            <p className="mx-auto mt-4 max-w-2xl leading-8 text-[#6c776f]">
-              نحن نطوّر طريقة التبليغ عن الأفراح والمناسبات في سيوة، ونحافظ
-              على قيمة الدعوة ومكانتها بين الأهل والأصدقاء والجيران.
-            </p>
-          </div>
+          <h1 className="mt-3 text-3xl font-bold text-[#315c4c] sm:text-4xl">
+            انضم إلى منظومة دعوة
+          </h1>
 
+          <p className="mx-auto mt-4 max-w-2xl leading-8 text-[#6c776f]">
+            نرتّب الطريق الذي تصل به الدعوة إلى أهلها، ونفتح لها وسيلة رقمية
+            تحفظ معناها وتواكب حياة سيوة اليوم.
+          </p>
+        </div>
+
+        <div className="mx-auto mt-10 max-w-3xl">
           <form
             onSubmit={handleSubmit}
-            className="rounded-[2rem] border border-[#e5dac9] bg-white p-5 shadow-sm sm:p-8"
+            className="rounded-[2rem] border border-[#e5dac9] bg-white p-5 text-right shadow-sm sm:p-8"
           >
             <div className="mb-8 rounded-2xl bg-[#eaf2ed] p-5 text-[#315c4c]">
               <p className="font-bold">قبل التسجيل</p>
               <p className="mt-2 text-sm leading-7">
-                التسجيل في المرحلة الحالية مخصص لأبناء سيوة. إدخال بياناتك
-                يعني انضمامك إلى منظومة استقبال الدعوات عند تشغيل خدماتها،
-                وستتعامل دعوة مع البيانات وفق سياسة الخصوصية.
+                التسجيل في المرحلة الحالية مخصص لأبناء سيوة. عند إكمال النموذج
+                تنضم إلى منظومة دعوة لاستقبال الدعوات عند تشغيل خدماتها، وتُدار
+                بياناتك وفق سياسة الخصوصية.
               </p>
             </div>
 
@@ -409,8 +434,8 @@ export default function RegisterPage() {
               </h2>
 
               <p className="mt-2 text-sm leading-7 text-[#6c776f]">
-                اختر المنطقة أولًا، ثم القبيلة والعائلة والبيت. هذا الترتيب
-                يساعد مستقبلًا على تنظيم كشوف الدعوات حسب المناطق.
+                اختر المنطقة أولًا، ثم القبيلة والعائلة والبيت. يساعد هذا
+                الترتيب على تنظيم كشوف الدعوات حسب المناطق.
               </p>
 
               <div className="mt-5 grid gap-5 sm:grid-cols-2">
@@ -460,7 +485,9 @@ export default function RegisterPage() {
                     className={inputClassName}
                   >
                     <option value="">
-                      {formData.regionId ? "اختر القبيلة" : "اختر المنطقة أولًا"}
+                      {formData.regionId
+                        ? "اختر القبيلة"
+                        : "اختر المنطقة أولًا"}
                     </option>
 
                     {availableTribes.map((tribe) => (
@@ -577,6 +604,7 @@ export default function RegisterPage() {
                       <span className="block font-bold text-[#315c4c]">
                         لا أجد اسم البيت الخاص بي
                       </span>
+
                       <span className="mt-1 block text-sm leading-6 text-[#6c776f]">
                         يمكنك اقتراح اسم بيت جديد، وستراجعه الإدارة قبل
                         اعتماده.
@@ -649,42 +677,86 @@ export default function RegisterPage() {
               </h2>
 
               <p className="mt-2 text-sm leading-7 text-[#6c776f]">
-                يمكنك رفع صورة البطاقة لمساعدة الإدارة في مراجعة بياناتك. لا
-                تظهر الصورة للعامة، ولا تمنح علامة «موثّق لدى دعوة» تلقائيًا.
+                يمكنك رفع صورتي الوجه والخلف للبطاقة لمساعدة الإدارة في مراجعة
+                بياناتك. لا تظهر الصور للعامة، ولا تمنح علامة «موثّق لدى دعوة»
+                تلقائيًا.
               </p>
 
-              <label
-                htmlFor="idCard"
-                className="mt-5 block cursor-pointer rounded-2xl border-2 border-dashed border-[#d7c7ae] bg-[#fdfcf9] p-6 text-center transition hover:border-[#315c4c]"
-              >
-                <span className="block font-bold text-[#315c4c]">
-                  اختر صورة البطاقة
-                </span>
+              <div className="mt-5 grid gap-5 sm:grid-cols-2">
+                <div>
+                  <label
+                    htmlFor="idCardFront"
+                    className="block cursor-pointer rounded-2xl border-2 border-dashed border-[#d7c7ae] bg-[#fdfcf9] p-6 text-center transition hover:border-[#315c4c]"
+                  >
+                    <span className="block font-bold text-[#315c4c]">
+                      صورة الوجه
+                    </span>
 
-                <span className="mt-2 block text-sm text-[#6c776f]">
-                  JPG أو PNG أو WEBP — الحد الأقصى 5 ميجابايت
-                </span>
+                    <span className="mt-2 block text-sm text-[#6c776f]">
+                      JPG أو PNG أو WEBP
+                    </span>
 
-                <input
-                  id="idCard"
-                  type="file"
-                  accept="image/jpeg,image/png,image/webp"
-                  onChange={handleFileChange}
-                  className="sr-only"
-                />
+                    <input
+                      id="idCardFront"
+                      type="file"
+                      accept="image/jpeg,image/png,image/webp"
+                      onChange={(event) =>
+                        handleIdCardFileChange(event, "front")
+                      }
+                      className="sr-only"
+                    />
 
-                {formData.idCardFile && (
-                  <span className="mt-3 block text-sm font-semibold text-[#c9783d]">
-                    تم اختيار: {formData.idCardFile.name}
-                  </span>
-                )}
-              </label>
+                    {formData.idCardFrontFile && (
+                      <span className="mt-3 block break-all text-sm font-semibold text-[#c9783d]">
+                        {formData.idCardFrontFile.name}
+                      </span>
+                    )}
+                  </label>
 
-              {errors.idCardFile && (
-                <p className="mt-2 text-sm text-red-600">
-                  {errors.idCardFile}
-                </p>
-              )}
+                  {errors.idCardFrontFile && (
+                    <p className="mt-2 text-sm text-red-600">
+                      {errors.idCardFrontFile}
+                    </p>
+                  )}
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="idCardBack"
+                    className="block cursor-pointer rounded-2xl border-2 border-dashed border-[#d7c7ae] bg-[#fdfcf9] p-6 text-center transition hover:border-[#315c4c]"
+                  >
+                    <span className="block font-bold text-[#315c4c]">
+                      صورة الخلف
+                    </span>
+
+                    <span className="mt-2 block text-sm text-[#6c776f]">
+                      JPG أو PNG أو WEBP
+                    </span>
+
+                    <input
+                      id="idCardBack"
+                      type="file"
+                      accept="image/jpeg,image/png,image/webp"
+                      onChange={(event) =>
+                        handleIdCardFileChange(event, "back")
+                      }
+                      className="sr-only"
+                    />
+
+                    {formData.idCardBackFile && (
+                      <span className="mt-3 block break-all text-sm font-semibold text-[#c9783d]">
+                        {formData.idCardBackFile.name}
+                      </span>
+                    )}
+                  </label>
+
+                  {errors.idCardBackFile && (
+                    <p className="mt-2 text-sm text-red-600">
+                      {errors.idCardBackFile}
+                    </p>
+                  )}
+                </div>
+              </div>
             </section>
 
             <section className="mt-10 border-t border-[#eee7db] pt-8">
@@ -751,6 +823,10 @@ export default function RegisterPage() {
               بإرسال النموذج، تؤكد أن البيانات المدخلة تخصك أو أنك تملك
               موافقة صاحبها.
             </p>
+
+            <div className="mt-6 text-center text-[10px] font-bold uppercase tracking-[0.28em] text-[#806477]">
+              siwa 360
+            </div>
           </form>
         </div>
       </div>
