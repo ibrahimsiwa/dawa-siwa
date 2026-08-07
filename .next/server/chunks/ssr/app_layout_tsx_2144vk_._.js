@@ -1,0 +1,3 @@
+module.exports=[33290,a=>{"use strict";var b=a.i(7997);a.s(["default",0,function({children:a}){return(0,b.jsx)("html",{lang:"ar",dir:"rtl",children:(0,b.jsx)("body",{children:a})})},"metadata",0,{title:{default:"دعوة | خلّي دعوتك توصل لأهلها",template:"%s | دعوة"},description:"دعوة منصة رقمية من سيوة لتنظيم بيانات أبناء الواحة والمساعدة مستقبلًا في إيصال الدعوات.",keywords:["دعوة","سيوة","دعوات الأفراح","أبناء سيوة","منصة دعوة"],applicationName:"دعوة",authors:[{name:"منصة دعوة"}],creator:"منصة دعوة",openGraph:{title:"دعوة | خلّي دعوتك توصل لأهلها",description:"منصة رقمية من سيوة لتنظيم بيانات أبناء الواحة والمساعدة في إيصال الدعوات.",locale:"ar_EG",type:"website"}}])},70864,a=>{a.n(a.i(33290))}];
+
+//# sourceMappingURL=app_layout_tsx_2144vk_._.js.map
